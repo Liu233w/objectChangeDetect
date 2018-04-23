@@ -44,20 +44,20 @@ namespace objectChangeDetect
     {
         public string ExtensionData { get; set; }
 
-        public TrackedObject<C2> TrackedC2() => this.GetTrackedData<C2>("c2");
+        public ExtendedObjectTracker<C2> TrackedC2() => this.GetTrackedData<C2>("c2");
     }
 
     static class TrackedObjectExtensions
     {
-        public static TrackedObject<T> GetTrackedData<T>(
+        public static ExtendedObjectTracker<T> GetTrackedData<T>(
             this IExtendableObject extendableObject,
             string name)
         {
-            return new TrackedObject<T>(extendableObject, name);
+            return new ExtendedObjectTracker<T>(extendableObject, name);
         }
     }
 
-    class TrackedObject<T> : IDisposable
+    class ExtendedObjectTracker<T> : IDisposable
     {
         public T Obj { get; set; }
 
@@ -67,7 +67,7 @@ namespace objectChangeDetect
 
         private readonly int _beginHash;
 
-        public TrackedObject(IExtendableObject entity, string key)
+        public ExtendedObjectTracker(IExtendableObject entity, string key)
         {
             _entity = entity;
             _key = key;
