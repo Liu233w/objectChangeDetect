@@ -9,9 +9,9 @@ namespace objectChangeDetect
         {
             var myEntity = new MyEntity();
 
-            using (var c2 = myEntity.TrackC2())
+            using (var c2Tracker = myEntity.TrackedC2())
             {
-                c2.Obj = new C2
+                c2Tracker.Obj = new C2
                 {
                     C = "c",
                     C1 = new C1
@@ -44,7 +44,7 @@ namespace objectChangeDetect
     {
         public string ExtensionData { get; set; }
 
-        public TrackedObject<C2> TrackC2() => this.GetTrackedData<C2>("c2");
+        public TrackedObject<C2> TrackedC2() => this.GetTrackedData<C2>("c2");
     }
 
     static class TrackedObjectExtensions
