@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "objectChangeDetect", "objectChangeDetect\objectChangeDetect.csproj", "{7FAC41CD-0E88-4190-9587-5D91BEB13764}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FAC41CD-0E88-4190-9587-5D91BEB13764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FAC41CD-0E88-4190-9587-5D91BEB13764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FAC41CD-0E88-4190-9587-5D91BEB13764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FAC41CD-0E88-4190-9587-5D91BEB13764}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6E7C2269-25D7-47AE-808F-3EEFC748F966}
+	EndGlobalSection
+EndGlobal
