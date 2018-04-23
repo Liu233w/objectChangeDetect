@@ -22,6 +22,11 @@ namespace objectChangeDetect
                 };
             }
 
+            using (var tracker2 = myEntity.TrackedC2())
+            {
+                tracker2.Obj.C = "new C";
+            }
+
             Console.WriteLine(myEntity.ExtensionData);
         }
     }
