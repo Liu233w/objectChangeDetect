@@ -1,5 +1,8 @@
 using System;
+using System.IO;
+using System.Runtime.Serialization;
 using Abp.Domain.Entities;
+using Newtonsoft.Json;
 
 namespace objectChangeDetect
 {
@@ -9,6 +12,7 @@ namespace objectChangeDetect
         {
             var myEntity = new MyEntity();
 
+            var now = DateTime.Now;
             using (var c2Tracker = myEntity.TrackedC2())
             {
                 c2Tracker.Obj = new C2
@@ -28,6 +32,8 @@ namespace objectChangeDetect
             }
 
             Console.WriteLine(myEntity.ExtensionData);
+
+            Console.WriteLine(DateTime.Now - now);
         }
     }
 
@@ -70,7 +76,7 @@ namespace objectChangeDetect
 
         private readonly string _key;
 
-        private readonly int _beginHash;
+        private readonly string _beginJson;
 
         public ExtendedObjectTracker(IExtendableObject entity, string key)
         {
@@ -78,13 +84,13 @@ namespace objectChangeDetect
             _key = key;
 
             Obj = entity.GetData<T>(key);
-            _beginHash = Obj == null ? 0 : Obj.GetHashCode();
+            _beginJson = JsonConvert.SerializeObject(Obj);
         }
 
         public void CheckAndUpdate()
         {
-            var endHash = Obj == null ? 0 : Obj.GetHashCode();
-            if (endHash != _beginHash)
+            var endJson = JsonConvert.SerializeObject(Obj);
+            if (endJson != _beginJson)
             {
                 _entity.SetData(_key, Obj);
             }
