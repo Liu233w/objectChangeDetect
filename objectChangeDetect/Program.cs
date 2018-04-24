@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using Abp.Dependency;
 using Abp.Domain.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace objectChangeDetect
 {
@@ -49,7 +53,12 @@ namespace objectChangeDetect
     {
         public string ExtensionData { get; set; }
 
-        public ExtendedObjectTracker<C2> TrackedC2() => this.GetTrackedData<C2>("c2");
+        [TrackedExtensionData]
+        public C2 C2 { get; set; }
+    }
+
+    class TrackedExtensionDataAttribute : Attribute
+    {
     }
 
     static class TrackedObjectExtensions
@@ -58,7 +67,23 @@ namespace objectChangeDetect
             this IExtendableObject extendableObject,
             string name)
         {
+            using (var disposable = IocManager.Instance.ResolveAsDisposable<IHttpContextAccessor>())
+            {
+                disposable.Object.HttpContext.RequestServices.GetService<Extendab>()
+            }
+            
+
             return new ExtendedObjectTracker<T>(extendableObject, name);
+        }
+    }
+
+    class ExtendableObjectManager
+    {
+        private Dictionary<string, object> _catchedObjects = new Dictionary<string, object>();
+
+        public T GetCatchedObject<T>(IExtendableObject extendableObject, string key)
+        {
+            
         }
     }
 
