@@ -1,5 +1,6 @@
 using System;
 using Abp.Domain.Entities;
+using ChangeTracking;
 
 namespace objectChangeDetect
 {
@@ -31,38 +32,39 @@ namespace objectChangeDetect
         }
     }
 
-    class C1
+    public class C1
     {
-        public string A { get; set; }
+        public virtual string A { get; set; }
 
-        public string B { get; set; }
+        public virtual string B { get; set; }
     }
 
-    class C2
+    public class C2
     {
-        public string C { get; set; }
+        public virtual string C { get; set; }
 
-        public C1 C1 { get; set; }
+        public virtual C1 C1 { get; set; }
     }
 
-    class MyEntity : Entity, IExtendableObject
+    public class MyEntity : Entity, IExtendableObject
     {
         public string ExtensionData { get; set; }
 
         public ExtendedObjectTracker<C2> TrackedC2() => this.GetTrackedData<C2>("c2");
     }
 
-    static class TrackedObjectExtensions
+    public static class TrackedObjectExtensions
     {
         public static ExtendedObjectTracker<T> GetTrackedData<T>(
             this IExtendableObject extendableObject,
-            string name)
+            string name) where T : class
         {
             return new ExtendedObjectTracker<T>(extendableObject, name);
         }
     }
 
-    class ExtendedObjectTracker<T> : IDisposable
+    public class ExtendedObjectTracker<T> : IDisposable
+        where T : class
     {
         public T Obj { get; set; }
 
@@ -70,21 +72,17 @@ namespace objectChangeDetect
 
         private readonly string _key;
 
-        private readonly int _beginHash;
-
         public ExtendedObjectTracker(IExtendableObject entity, string key)
         {
             _entity = entity;
             _key = key;
 
-            Obj = entity.GetData<T>(key);
-            _beginHash = Obj == null ? 0 : Obj.GetHashCode();
+            Obj = entity.GetData<T>(key).AsTrackable();
         }
 
         public void CheckAndUpdate()
         {
-            var endHash = Obj == null ? 0 : Obj.GetHashCode();
-            if (endHash != _beginHash)
+            if (Obj.CastToIChangeTrackable<T>().IsChanged)
             {
                 _entity.SetData(_key, Obj);
             }
